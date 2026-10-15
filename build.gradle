@@ -32,3 +32,5 @@ tasks.register('generateModMetadata') {
 }
 sourceSets.main.resources.srcDir(generatedMetadata)
 processResources.dependsOn('generateModMetadata')
+
+tasks.named('sourcesJar') { dependsOn('generateModMetadata') }
