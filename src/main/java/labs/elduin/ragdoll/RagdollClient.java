@@ -8,6 +8,7 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.lwjgl.glfw.GLFW;
 
 /** Local visual prototype. Vanilla handles movement, water and collisions. */
@@ -31,7 +32,7 @@ public class RagdollClient implements ClientModInitializer {
 
     @Override public void onInitializeClient() {
         KeyBinding toggle = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-            "key.ragdoll.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, "category.ragdoll"));
+            "key.ragdoll.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_I, KeyBinding.Category.create(Identifier.of("ragdoll", "general"))));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (client.player == null || client.world == null || !client.player.isAlive()) {
                 stop(client); return;

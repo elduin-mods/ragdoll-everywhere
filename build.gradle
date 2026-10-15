@@ -1,13 +1,34 @@
-plugins { id 'fabric-loom' version '1.8.13'; id 'maven-publish' }
-version = '0.1.0'
+plugins { id 'fabric-loom' version '1.16.3'; id 'maven-publish' }
+version = '0.2.0'
 group = 'labs.elduin'
 base { archivesName = 'ragdoll-everywhere' }
 repositories { mavenCentral() }
 dependencies {
- minecraft 'com.mojang:minecraft:1.21.3'
- mappings 'net.fabricmc:yarn:1.21.3+build.2:v2'
- modImplementation 'net.fabricmc:fabric-loader:0.16.9'
- modImplementation 'net.fabricmc.fabric-api:fabric-api:0.107.0+1.21.3'
+ minecraft 'com.mojang:minecraft:1.21.11'
+ mappings 'net.fabricmc:yarn:1.21.11+build.6:v2'
+ modImplementation 'net.fabricmc:fabric-loader:0.19.3'
+ modImplementation 'net.fabricmc.fabric-api:fabric-api:0.141.6+1.21.11'
 }
 java { toolchain { languageVersion = JavaLanguageVersion.of(21) }; withSourcesJar() }
-processResources { inputs.property 'version', project.version; filesMatching('fabric.mod.json') { expand 'version': project.version } }
+def generatedMetadata = layout.buildDirectory.dir('generated/modMetadata')
+tasks.register('generateModMetadata') {
+ inputs.file('stonecutter.properties.toml')
+ inputs.file('manifest-template.json')
+ outputs.dir(generatedMetadata)
+ doLast {
+  def metadata = new groovy.json.JsonSlurper().parse(file('manifest-template.json'))
+  def config = [:]
+  file('stonecutter.properties.toml').eachLine { line ->
+   def match = line =~ /^([a-zA-Z0-9.\-]+)\s*=\s*"([^"\n]+)"/
+   if (match.find()) config[match.group(1)] = match.group(2)
+  }
+  metadata.id = config['mod.id']; metadata.name = config['mod.name']; metadata.version = config['mod.version']
+  metadata.environment = config['mod.environment']; metadata.depends.minecraft = config['deps.minecraft']
+  metadata.depends.fabricloader = '>=' + config['deps.fabric-loader']
+  metadata.depends['fabric-api'] = '>=' + config['deps.fabric-api']
+  def target = generatedMetadata.get().file('fabric.mod.json').asFile
+  target.parentFile.mkdirs(); target.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(metadata))
+ }
+}
+sourceSets.main.resources.srcDir(generatedMetadata)
+processResources.dependsOn('generateModMetadata')

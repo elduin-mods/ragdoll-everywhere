@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "ragdoll",
-  "version": "${version}",
+  "version": "0.2.0",
   "name": "Ragdoll Everywhere",
   "description": "Press I to flop! Experimental single-player ragdoll-style animation.",
   "authors": [
@@ -17,8 +17,8 @@
     "ragdoll.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16.9",
-    "minecraft": "1.21.3",
+    "fabricloader": ">=0.19.3",
+    "minecraft": "1.21.11",
     "java": ">=21",
     "fabric-api": "*"
   }
