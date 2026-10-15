@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "ragdoll",
+  "version": "${version}",
+  "name": "Ragdoll Everywhere",
+  "description": "Press I to flop! Experimental single-player ragdoll-style animation.",
+  "authors": [
+    "Elduin-Labs"
+  ],
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "labs.elduin.ragdoll.RagdollClient"
+    ]
+  },
+  "mixins": [
+    "ragdoll.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.9",
+    "minecraft": "1.21.3",
+    "java": ">=21",
+    "fabric-api": "*"
+  }
+}
