@@ -19,9 +19,5 @@ public class PlayerModelMixin {
         model.rightLeg.pitch = RagdollClient.limbs[3];
         model.leftArm.roll = 0.6f;
         model.rightArm.roll = -0.6f;
-        model.leftSleeve.copyTransform(model.leftArm);
-        model.rightSleeve.copyTransform(model.rightArm);
-        model.leftPants.copyTransform(model.leftLeg);
-        model.rightPants.copyTransform(model.rightLeg);
     }
 }
